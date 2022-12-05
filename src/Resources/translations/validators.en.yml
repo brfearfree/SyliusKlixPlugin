@@ -1,0 +1,9 @@
+whitedigital:
+    klix_plugin:
+        gateway_configuration:
+            brand_id:
+                not_blank: The Brand ID has not been provided.
+            api_key:
+                not_blank: The API key has not been provided.
+            endpoint:
+                not_blank: The Endpoint has not been provided.

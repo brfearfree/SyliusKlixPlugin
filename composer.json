@@ -1,0 +1,37 @@
+{
+    "name": "whitedigital/klix-plugin",
+    "type": "sylius-plugin",
+    "description": "Klix payment plugin for Sylius applications",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Romāns Davidko",
+            "email": "romans.davidko@whitedigital.eu"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "6.5.8 as 7.0",
+        "sylius/sylius": "~1.12.0",
+        "klix/klix-sdk-php": "^3.0"
+    },
+    "require-dev": {
+        "sylius-labs/coding-standard": "~4.1.0"
+    },
+    "conflict": {
+        "symfony/symfony": "4.1.8",
+        "symfony/browser-kit": "4.1.8",
+        "symfony/dom-crawler": "4.1.8",
+        "symfony/routing": "4.1.8",
+        "symfony/doctrine-bridge": "4.4.16"
+    },
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "WhiteDigital\\SyliusKlixPlugin\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": true
+    }
+}
