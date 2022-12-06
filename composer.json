@@ -1,5 +1,5 @@
 {
-    "name": "whitedigital/klix-plugin",
+    "name": "whitedigital/sylius-klix-plugin",
     "type": "sylius-plugin",
     "description": "Klix payment plugin for Sylius applications",
     "license": "MIT",
