@@ -40,6 +40,12 @@ final class KlixBridge implements KlixBridgeInterface
 
         $purchase->brand_id = $this->brand_id;
 
+        $purchase->cancel_redirect = $order->cancel_redirect;
+        $purchase->success_redirect = $order->success_redirect;
+        $purchase->cancel_redirect = $order->cancel_redirect;
+
+        //$purchase->success_callback = $order->success_callback;
+
         $client = new ClientDetails();
         $client->email = $order->customer->email;
         $purchase->client = $client;

@@ -40,13 +40,6 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
         /** @var OrderInterface $orderData */
         $order = $request->getFirstModel()->getOrder();
 
-        /** @var TokenInterface $token */
-        $token = $request->getToken();
-        $klixData = $this->prepareOrderData($token, $order);
-
-        /** @var Purchase|null $result */
-        $result = $this->klixBridge->create($klixData);
-
         if (null !== $model['orderId']) {
             /** @var Purchase $purchase */
             $purchase = $this->klixBridge->retrieve((string) $model['orderId']);
@@ -55,6 +48,14 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
                 $model['statusKlix'] = $purchase->status;
                 $request->setModel($model);
             }
+        }
+        else{
+            /** @var TokenInterface $token */
+            $token = $request->getToken();
+            $klixData = $this->prepareOrderData($token, $order);
+
+            /** @var Purchase|null $result */
+            $result = $this->klixBridge->create($klixData);
         }
 
         if (($result instanceof Purchase) && isSet($result->id)) {
@@ -89,7 +90,9 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
 
         $bridgeOrder->success_redirect = $token->getTargetUrl();
         $bridgeOrder->failure_redirect = $token->getTargetUrl();
-        $bridgeOrder->failure_redirect = $token->getTargetUrl();
+        $bridgeOrder->cancel_redirect = $token->getTargetUrl();
+
+        $bridgeOrder->success_callback = $notifyToken->getTargetUrl();
 
         $bridgeOrder->customerIp = $order->getCustomerIp();
         $bridgeOrder->description = $order->getNumber();

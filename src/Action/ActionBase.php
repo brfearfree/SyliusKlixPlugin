@@ -3,6 +3,7 @@
 namespace WhiteDigital\SyliusKlixPlugin\Action;
 
 use Payum\Core\Exception\UnsupportedApiException;
+use Psr\Log\LoggerInterface;
 use WhiteDigital\SyliusKlixPlugin\Bridge\KlixBridgeInterface;
 
 class ActionBase{
