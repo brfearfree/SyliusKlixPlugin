@@ -1,0 +1,6 @@
+whitedigital:
+    klix_plugin:
+        gateway_label: Klix
+        endpoint: Endpoint
+        api_key: API key
+        brand_id: Brand ID

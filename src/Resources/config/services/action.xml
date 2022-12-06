@@ -1,0 +1,18 @@
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <defaults public="true" autoconfigure="false" autowire="false"/>
+
+        <service id="whitedigital.klix_plugin.action.capture" class="WhiteDigital\SyliusKlixPlugin\Action\CaptureAction">
+            <argument type="service" id="whitedigital.klix_plugin.bridge.klix"/>
+            <tag name="payum.action" factory="klix" alias="payum.action.capture"/>
+        </service>
+
+        <service id="whitedigital.klix_plugin.action.status" class="WhiteDigital\SyliusKlixPlugin\Action\StatusAction">
+            <argument type="service" id="whitedigital.klix_plugin.bridge.klix"/>
+            <tag name="payum.action" factory="klix" alias="payum.action.status"/>
+        </service>
+
+    </services>
+</container>
