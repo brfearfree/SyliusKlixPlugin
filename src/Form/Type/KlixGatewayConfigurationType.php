@@ -34,11 +34,11 @@ final class KlixGatewayConfigurationType extends AbstractType
                 'api_key',
                 TextType::class,
                 [
-                    'label' => 'whitedigital.klix_plugin.api_key',
+                    'label' => 'whitedigital.sylius_klix_plugin.api_key',
                     'constraints' => [
                         new NotBlank(
                             [
-                                'message' => 'whitedigital.klix_plugin.gateway_configuration.api_key.not_blank',
+                                'message' => 'whitedigital.sylius_klix_plugin.gateway_configuration.api_key.not_blank',
                                 'groups' => ['sylius'],
                             ]
                         ),
@@ -49,11 +49,11 @@ final class KlixGatewayConfigurationType extends AbstractType
                 'brand_id',
                 TextType::class,
                 [
-                    'label' => 'whitedigital.klix_plugin.brand_id',
+                    'label' => 'whitedigital.sylius_klix_plugin.brand_id',
                     'constraints' => [
                         new NotBlank(
                             [
-                                'message' => 'whitedigital.klix_plugin.gateway_configuration.brand_id.not_blank',
+                                'message' => 'whitedigital.sylius_klix_plugin.gateway_configuration.brand_id.not_blank',
                                 'groups' => ['sylius'],
                             ]
                         ),
@@ -64,11 +64,11 @@ final class KlixGatewayConfigurationType extends AbstractType
                 'endpoint',
                 TextType::class,
                 [
-                    'label' => 'whitedigital.klix_plugin.endpoint',
+                    'label' => 'whitedigital.sylius_klix_plugin.endpoint',
                     'constraints' => [
                         new NotBlank(
                             [
-                                'message' => 'whitedigital.klix_plugin.gateway_configuration.endpoint.not_blank',
+                                'message' => 'whitedigital.sylius_klix_plugin.gateway_configuration.endpoint.not_blank',
                                 'groups' => ['sylius'],
                             ]
                         ),

@@ -4,8 +4,8 @@
 
         <defaults public="true" autoconfigure="false" autowire="false"/>
 
-        <service id="whitedigital.klix_plugin.gateway_factory" class="Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder">
-            <argument>WgiteDigital\SyliusKlixPlugin\KlixGatewayFactory</argument>
+        <service id="whitedigital.sylius_klix_plugin.gateway_factory" class="Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder">
+            <argument>WhiteDigital\SyliusKlixPlugin\KlixGatewayFactory</argument>
             <tag name="payum.gateway_factory_builder" factory="klix"/>
         </service>
 

@@ -1,5 +1,5 @@
 whitedigital:
-    klix_plugin:
+    sylius_klix_plugin:
         gateway_configuration:
             brand_id:
                 not_blank: The Brand ID has not been provided.

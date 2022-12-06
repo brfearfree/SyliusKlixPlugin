@@ -51,13 +51,13 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
             /** @var Purchase $purchase */
             $purchase = $this->klixBridge->retrieve((string) $model['orderId']);
 
-            if(($purchase instanceof Purchase::class) && isSet($purchase->status)){
+            if(($purchase instanceof Purchase) && isSet($purchase->status)){
                 $model['statusKlix'] = $purchase->status;
                 $request->setModel($model);
             }
         }
 
-        if (($result instanceof Purchase::class) && isSet($result->id)) {
+        if (($result instanceof Purchase) && isSet($result->id)) {
             $model['orderId'] = $result->id;
             $model['statusKlix'] = $result->status;
 
