@@ -24,7 +24,7 @@ final class StatusAction extends ActionBase implements ActionInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
         $status = $model['statusKlix'] ?? null;
-        $orderId = $model['orderId'] ?? null;
+        $orderId = $model['klixOrderId'] ?? null;
 
         if ((null === $status || in_array($status,KlixBridgeInterface::CREATED_PAYMENT_STATUSES)) && null !== $orderId) {
             $request->markNew();

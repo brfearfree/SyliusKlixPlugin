@@ -40,15 +40,15 @@ final class KlixBridge implements KlixBridgeInterface
 
         $purchase->brand_id = $this->brand_id;
 
-        $purchase->cancel_redirect = $order->cancel_redirect;
-        $purchase->success_redirect = $order->success_redirect;
-        $purchase->cancel_redirect = $order->cancel_redirect;
-
-        //$purchase->success_callback = $order->success_callback;
-
         $client = new ClientDetails();
         $client->email = $order->customer->email;
         $purchase->client = $client;
+
+        $purchase->cancel_redirect = $order->cancel_redirect;
+        $purchase->success_redirect = $order->success_redirect;
+        $purchase->failure_redirect = $order->failure_redirect;
+
+        $purchase->success_callback = $order->success_callback;
 
         $details = new PurchaseDetails();
         $details->products = [];
@@ -63,9 +63,7 @@ final class KlixBridge implements KlixBridgeInterface
         }
         $purchase->purchase = $details;
 
-        $result = $this->klix->createPurchase($purchase);
-
-        return $result;
+        return $this->klix->createPurchase($purchase);
     }
 
     public function retrieve(string $orderId)
@@ -75,6 +73,9 @@ final class KlixBridge implements KlixBridgeInterface
 
     public function consumeNotification($data)
     {
-        return '';
+        $data = trim($data);
+        $json = json_decode($data);
+
+        return ($json && isset($json->id) && $json->id) ? $json : false;
     }
 }

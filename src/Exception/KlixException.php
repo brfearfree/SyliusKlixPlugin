@@ -21,6 +21,7 @@ final class KlixException extends HttpException
             }
             $parts[] = $part;
         }
+        $parts[] = $status::class;
 
         $message = implode(\PHP_EOL, $parts);
 

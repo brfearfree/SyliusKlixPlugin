@@ -18,6 +18,9 @@ interface KlixBridgeInterface
     public const SECURE_ENVIRONMENT = 'Secure';
     public const SANDBOX_ENVIRONMENT = 'Sandbox';
 
+    public const NEW_PAYMENT_STATUS = 'created';
+    public const ERROR_PAYMENT_STATUS = 'error';
+
     public function setAuthorizationData(
         string $brand_id,
         string $api_key,

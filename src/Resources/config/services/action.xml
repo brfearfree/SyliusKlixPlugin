@@ -9,9 +9,18 @@
             <tag name="payum.action" factory="klix" alias="payum.action.capture"/>
         </service>
 
+        <service id="whitedigital.sylius_klix_plugin.action.notify" class="WhiteDigital\SyliusKlixPlugin\Action\NotifyAction">
+            <argument type="service" id="whitedigital.sylius_klix_plugin.bridge.open_payu"/>
+            <tag name="payum.action" factory="payu" alias="payum.action.notify"/>
+        </service>
+
         <service id="whitedigital.sylius_klix_plugin.action.status" class="WhiteDigital\SyliusKlixPlugin\Action\StatusAction">
             <argument type="service" id="whitedigital.sylius_klix_plugin.bridge.klix"/>
             <tag name="payum.action" factory="klix" alias="payum.action.status"/>
+        </service>
+
+        <service id="whitedigital.sylius_klix_plugin.convert_payment" class="WhiteDigital\SyliusKlixPlugin\Action\ConvertPaymentAction">
+            <tag name="payum.action" factory="klix" alias="payum.action.convert_payment"/>
         </service>
 
     </services>

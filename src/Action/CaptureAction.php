@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace WhiteDigital\SyliusKlixPlugin\Action;
 
 use Klix\Model\Purchase;
+use Mockery\Exception;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -20,6 +21,7 @@ use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Webmozart\Assert\Assert;
+use WhiteDigital\SyliusKlixPlugin\Bridge\KlixBridgeInterface;
 use WhiteDigital\SyliusKlixPlugin\Exception\KlixException;
 use WhiteDigital\SyliusKlixPlugin\Models\BridgeCustomer;
 use WhiteDigital\SyliusKlixPlugin\Models\BridgeOrder;
@@ -40,31 +42,68 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
         /** @var OrderInterface $orderData */
         $order = $request->getFirstModel()->getOrder();
 
-        if (null !== $model['orderId']) {
-            /** @var Purchase $purchase */
-            $purchase = $this->klixBridge->retrieve((string) $model['orderId']);
+        $redirect_to_payment_portal = false;
 
-            if(($purchase instanceof Purchase) && isSet($purchase->status)){
-                $model['statusKlix'] = $purchase->status;
-                $request->setModel($model);
+        if (null !== $model['klixOrderId']) {
+            // Retrive transaction data
+            try{
+                /** @var Purchase $result */
+                $result = $this->klixBridge->retrieve((string) $model['klixOrderId']);
             }
-        }
-        else{
-            /** @var TokenInterface $token */
-            $token = $request->getToken();
-            $klixData = $this->prepareOrderData($token, $order);
+            catch(\Exception $exception){
+                // Transaction does not exists
+                $result = $exception;
+            }
 
+            if(isSet($result) && ($result instanceof Purchase) && isSet($result->status)){
+                if(in_array($result->status, KlixBridgeInterface::CREATED_PAYMENT_STATUSES)) {
+                    if($model['klixResult']->checkout_url ?? false){
+                        throw new HttpRedirect($result->checkout_url);
+                    }
+                    else{
+                        $model['statusKlix'] = KlixBridgeInterface::ERROR_PAYMENT_STATUS;
+                    }
+                }
+                else{
+                    $model['statusKlix'] = $result->status;
+                }
+            }
+            else{
+                $model['statusKlix'] = KlixBridgeInterface::ERROR_PAYMENT_STATUS;
+            }
+
+            $request->setModel($model);
+            return;
+        }
+
+        // We need to create new trasaction if got so far
+        /** @var TokenInterface $token */
+        $token = $request->getToken();
+        $klixData = $this->prepareOrderData($token, $order);
+
+        try {
             /** @var Purchase|null $result */
             $result = $this->klixBridge->create($klixData);
         }
+        catch(\Exception $exception){
+            $result = $exception;
+        }
 
-        if (($result instanceof Purchase) && isSet($result->id)) {
-            $model['orderId'] = $result->id;
+        if (isSet($result) && ($result instanceof Purchase) && isSet($result->id) && ($model['statusKlix']===null)) {
+            $model['klixOrderId'] = $result->id;
             $model['statusKlix'] = $result->status;
+
+            $model['klixResult'] = $result;
 
             $request->setModel($model);
 
             throw new HttpRedirect($result->checkout_url);
+        }
+        
+        if(!isSet($result)){
+            $result = new \StdClass();
+            $result->code = 'ERROR';
+            $result->message = 'Failed to initialize KLIX transaction!';
         }
 
         throw KlixException::newInstance($result);
