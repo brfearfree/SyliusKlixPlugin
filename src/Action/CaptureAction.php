@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace WhiteDigital\SyliusKlixPlugin\Action;
 
 use Klix\Model\Purchase;
-use Mockery\Exception;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
