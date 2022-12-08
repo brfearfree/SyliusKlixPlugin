@@ -6,12 +6,9 @@ namespace WhiteDigital\SyliusKlixPlugin\Action;
 
 use ArrayObject;
 use Klix\Model\Purchase;
-use OpenPayU_Exception;
-use OpenPayU_Result;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Exception\UnsupportedApiException;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\Notify;

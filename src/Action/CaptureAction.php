@@ -76,7 +76,7 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
             return;
         }
 
-        // We need to create new trasaction if got so far
+        // We need to create new transaction if got so far
         /** @var TokenInterface $token */
         $token = $request->getToken();
         $klixData = $this->prepareOrderData($token, $order);
