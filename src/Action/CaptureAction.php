@@ -83,22 +83,22 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
         $regex = '#\/\/([a-zA-Z0-9\.\-]+)\/#i';
         if($configured_target_url = $this->klixBridge->getCustomTargetUrl()){
             $url = $token->getTargetUrl();
-            preg_replace($regex, $configured_target_url, $url);
+            $url = preg_replace($regex, $configured_target_url, $url, 1);
             $token->setTargetUrl($url);
 
             if($url = $token->getAfterUrl()){
-                preg_replace($regex, $configured_target_url, $url);
+                $url = preg_replace($regex, $configured_target_url, $url, 1);
                 $token->setAfterUrl($url);
             }
         }
 
         if($configured_notify_url = $this->klixBridge->getCustomNotifyUrl()){
             $url = $notifyToken->getTargetUrl();
-            preg_replace($regex, $configured_notify_url, $url);
-            $notifyToken->setTargetUrl($configured_notify_url);
+            $url = preg_replace($regex, $configured_notify_url, $url, 1);
+            $notifyToken->setTargetUrl($url);
 
             if($url = $notifyToken->getAfterUrl()){
-                preg_replace($regex, $configured_notify_url, $url);
+                $url = preg_replace($regex, $configured_notify_url, $url, 1);
                 $notifyToken->setAfterUrl($url);
             }
         }
