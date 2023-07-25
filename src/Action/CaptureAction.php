@@ -80,27 +80,14 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
         $token = $request->getToken();
         $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
 
-        $regex = '#\/\/([a-zA-Z0-9\.\-]+)\/#i';
         if($configured_target_url = $this->klixBridge->getCustomTargetUrl()){
-            $url = $token->getTargetUrl();
-            $url = preg_replace($regex, $configured_target_url, $url, 1);
-            $token->setTargetUrl($url);
-
-            if($url = $token->getAfterUrl()){
-                $url = preg_replace($regex, $configured_target_url, $url, 1);
-                $token->setAfterUrl($url);
-            }
+            $hash = $token->getHash();
+            $token->setTargetUrl($configured_target_url . '?payum_token=' . $hash);
         }
 
         if($configured_notify_url = $this->klixBridge->getCustomNotifyUrl()){
-            $url = $notifyToken->getTargetUrl();
-            $url = preg_replace($regex, $configured_notify_url, $url, 1);
-            $notifyToken->setTargetUrl($url);
-
-            if($url = $notifyToken->getAfterUrl()){
-                $url = preg_replace($regex, $configured_notify_url, $url, 1);
-                $notifyToken->setAfterUrl($url);
-            }
+            $hash = $notifyToken->getHash();
+            $notifyToken->setTargetUrl($configured_notify_url . '?payum_token=' . $hash);
         }
 
         $klixData = $this->prepareOrderData($token, $order, $notifyToken);
