@@ -27,9 +27,19 @@ interface KlixBridgeInterface
         string $endpoint
     ): void;
 
+    public function setCustomTargetUrl(string $url): void;
+
+    public function getCustomTargetUrl() :string;
+
     public function create(BridgeOrder $order);
 
     public function retrieve(string $orderId);
 
     public function consumeNotification($data);
+
+    public function setCustomNotifyUrl(string $url): void;
+
+    public function getCustomNotifyUrl() :string;
+
+
 }

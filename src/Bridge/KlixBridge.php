@@ -20,6 +20,9 @@ final class KlixBridge implements KlixBridgeInterface
     private KlixApi $klix;
     private $brand_id;
 
+    private $customTargetUrl;
+    private $customNotifyUrl;
+
     public function __construct(string $cacheDir = null)
     {
         $this->cacheDir = $cacheDir;
@@ -34,6 +37,15 @@ final class KlixBridge implements KlixBridgeInterface
         $this->brand_id = $brand_id;
     }
 
+    public function setCustomTargetUrl(string $url): void
+    {
+        $this->customTargetUrl = $url;
+    }
+
+    public function getCustomTargetUrl() :string
+    {
+        return $this->customTargetUrl ?? '';
+    }
     public function create(BridgeOrder $order) :Purchase
     {
         $purchase = new Purchase();
@@ -78,4 +90,15 @@ final class KlixBridge implements KlixBridgeInterface
 
         return ($json && isset($json->id) && $json->id) ? $json : false;
     }
+
+    public function setCustomNotifyUrl(string $url): void
+    {
+        $this->customNotifyUrl = $url;
+    }
+
+    public function getCustomNotifyUrl() :string
+    {
+        return $this->customNotifyUrl ?? '';
+    }
+
 }

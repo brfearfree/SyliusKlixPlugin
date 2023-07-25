@@ -78,7 +78,16 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
         // We need to create new transaction if got so far
         /** @var TokenInterface $token */
         $token = $request->getToken();
-        $klixData = $this->prepareOrderData($token, $order);
+        $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
+
+        if($configured_target_url = $this->klixBridge->getCustomTargetUrl()){
+            $token->setTargetUrl($configured_target_url);
+        }
+        if($configured_notify_url = $this->klixBridge->getCustomNotifyUrl()){
+            $token->setTargetUrl($configured_notify_url);
+        }
+
+        $klixData = $this->prepareOrderData($token, $order, $notifyToken);
 
         try {
             /** @var Purchase|null $result */
@@ -120,11 +129,9 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
             && $request->getModel() instanceof ArrayObject;
     }
 
-    private function prepareOrderData(TokenInterface $token, OrderInterface $order): BridgeOrder
+    private function prepareOrderData(TokenInterface $token, OrderInterface $order, TokenInterface $notifyToken): BridgeOrder
     {
         $bridgeOrder = new BridgeOrder();
-
-        $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
 
         $bridgeOrder->success_redirect = $token->getTargetUrl();
         $bridgeOrder->failure_redirect = $token->getTargetUrl();

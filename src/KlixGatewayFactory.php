@@ -23,6 +23,8 @@ final class KlixGatewayFactory extends GatewayFactory
                 'brand_id' => '',
                 'api_key' => '',
                 'endpoint' => '',
+                'target_url' => '',
+                'notify_url' => '',
             ];
 
             $config->defaults($config['payum.default_options']);
@@ -36,6 +38,8 @@ final class KlixGatewayFactory extends GatewayFactory
                     'brand_id' => $config['brand_id'],
                     'api_key' => $config['api_key'],
                     'endpoint' => $config['endpoint'],
+                    'target_url' => $config['target_url'],
+                    'notify_url' => $config['notify_url'],
                 ];
             };
         }
