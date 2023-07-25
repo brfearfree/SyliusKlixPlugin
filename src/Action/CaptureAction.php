@@ -80,11 +80,27 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
         $token = $request->getToken();
         $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
 
+        $regex = '#\/\/([a-zA-Z0-9\.\-]+)\/#i';
         if($configured_target_url = $this->klixBridge->getCustomTargetUrl()){
-            $token->setTargetUrl($configured_target_url);
+            $url = $token->getTargetUrl();
+            preg_replace($regex, $configured_target_url, $url);
+            $token->setTargetUrl($url);
+
+            if($url = $token->getAfterUrl()){
+                preg_replace($regex, $configured_target_url, $url);
+                $token->setAfterUrl($url);
+            }
         }
+
         if($configured_notify_url = $this->klixBridge->getCustomNotifyUrl()){
-            $token->setTargetUrl($configured_notify_url);
+            $url = $notifyToken->getTargetUrl();
+            preg_replace($regex, $configured_notify_url, $url);
+            $notifyToken->setTargetUrl($configured_notify_url);
+
+            if($url = $notifyToken->getAfterUrl()){
+                preg_replace($regex, $configured_notify_url, $url);
+                $notifyToken->setAfterUrl($url);
+            }
         }
 
         $klixData = $this->prepareOrderData($token, $order, $notifyToken);
