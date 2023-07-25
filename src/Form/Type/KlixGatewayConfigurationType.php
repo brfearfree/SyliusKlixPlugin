@@ -74,6 +74,20 @@ final class KlixGatewayConfigurationType extends AbstractType
                         ),
                     ],
                 ]
+            )
+            ->add(
+                'target_url',
+                TextType::class,
+                [
+                    'label' => 'whitedigital.sylius_klix_plugin.target_url',
+                ]
+            )
+            ->add(
+                'notify_url',
+                TextType::class,
+                [
+                    'label' => 'whitedigital.sylius_klix_plugin.notify_url',
+                ]
             );
     }
 }

@@ -26,5 +26,8 @@ class ActionBase{
             $api['api_key'],
             $api['endpoint']
         );
+
+        $this->klixBridge->setCustomTargetUrl($api['target_url']);
+        $this->klixBridge->setCustomNotifyUrl($api['notify_url']);
     }
 }
