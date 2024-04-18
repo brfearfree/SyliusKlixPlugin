@@ -138,11 +138,8 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
 
         $targetUrl = $token->getTargetUrl();
         $locale = $order->getLocaleCode();
-        if($locale){
-            $locale = substr($locale,0,2);
-        }
-        else{
-            $locale = 'lv';
+        if(!$locale){
+            $locale = 'lv_LV';
         }
 
         $targetUrl = str_replace("api/v2/shop/payum/", "{$locale}/checkout/complete/", $targetUrl);
