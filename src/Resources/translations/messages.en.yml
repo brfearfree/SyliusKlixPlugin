@@ -4,3 +4,5 @@ whitedigital:
         endpoint: Endpoint
         api_key: API key
         brand_id: Brand ID
+        target_url: Target URL
+        notify_url: Notify URL
