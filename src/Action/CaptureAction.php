@@ -136,9 +136,20 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
     {
         $bridgeOrder = new BridgeOrder();
 
-        $bridgeOrder->success_redirect = $token->getTargetUrl();
-        $bridgeOrder->failure_redirect = $token->getTargetUrl();
-        $bridgeOrder->cancel_redirect = $token->getTargetUrl();
+        $targetUrl = $token->getTargetUrl();
+        $locale = $order->getLocaleCode();
+        if($locale){
+            $locale = substr($locale,0,2);
+        }
+        else{
+            $locale = 'lv';
+        }
+
+        $targetUrl = str_replace("api/v2/shop/payum/", "{$locale}/checkout/complete/", $targetUrl);
+
+        $bridgeOrder->success_redirect = $targetUrl;
+        $bridgeOrder->failure_redirect = $targetUrl;
+        $bridgeOrder->cancel_redirect = $targetUrl;
 
         $bridgeOrder->success_callback = $notifyToken->getTargetUrl();
 
