@@ -95,7 +95,7 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
             }
 
             if(stripos($configured_target_url, '{locale}') !== false){
-                $final_url = str_replace('{locale}', $locale, $configured_target_url);
+                $final_url = str_replace('{locale}', $locale, $final_url);
             }
             else{
                 $final_url .= '&locale=' . $locale;
