@@ -107,14 +107,14 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
         if($configured_notify_url = $this->klixBridge->getCustomNotifyUrl()){
             $hash = $notifyToken->getHash();
 
-            if(stripos('{token}', $configured_notify_url) !== false){
+            if(stripos($configured_notify_url, '{token}') !== false){
                 $final_url = str_replace('{token}', $hash, $configured_notify_url);
             }
             else{
                 $final_url = $configured_notify_url . '?payum_token=' . $hash;
             }
 
-            if(stripos('{locale}', $configured_target_url) !== false){
+            if(stripos($configured_target_url, '{locale}') !== false){
                 $final_url = str_replace('{locale}', $locale, $configured_target_url);
             }
             else{
