@@ -80,14 +80,48 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
         $token = $request->getToken();
         $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
 
+        $locale = $order->getLocaleCode();
+        if(!$locale){
+            $locale = 'lv_LV';
+        }
+
         if($configured_target_url = $this->klixBridge->getCustomTargetUrl()){
             $hash = $token->getHash();
-            $token->setTargetUrl($configured_target_url . '?payum_token=' . $hash);
+            if(stripos('{token}', $configured_target_url) !== false){
+                $final_url = str_replace('{token}', $hash, $configured_target_url);
+            }
+            else{
+                $final_url = $configured_target_url . '?payum_token=' . $hash;
+            }
+
+            if(stripos('{locale}', $configured_target_url) !== false){
+                $final_url = str_replace('{locale}', $locale, $configured_target_url);
+            }
+            else{
+                $final_url .= '&locale=' . $locale;
+            }
+
+            $token->setTargetUrl($final_url);
         }
 
         if($configured_notify_url = $this->klixBridge->getCustomNotifyUrl()){
             $hash = $notifyToken->getHash();
-            $notifyToken->setTargetUrl($configured_notify_url . '?payum_token=' . $hash);
+
+            if(stripos('{token}', $configured_notify_url) !== false){
+                $final_url = str_replace('{token}', $hash, $configured_notify_url);
+            }
+            else{
+                $final_url = $configured_notify_url . '?payum_token=' . $hash;
+            }
+
+            if(stripos('{locale}', $configured_target_url) !== false){
+                $final_url = str_replace('{locale}', $locale, $configured_target_url);
+            }
+            else{
+                $final_url .= '&locale=' . $locale;
+            }
+
+            $notifyToken->setTargetUrl($final_url);
         }
 
         $klixData = $this->prepareOrderData($token, $order, $notifyToken);
@@ -137,12 +171,6 @@ final class CaptureAction extends ActionBase implements ActionInterface, ApiAwar
         $bridgeOrder = new BridgeOrder();
 
         $targetUrl = $token->getTargetUrl();
-        $locale = $order->getLocaleCode();
-        if(!$locale){
-            $locale = 'lv_LV';
-        }
-
-        $targetUrl = str_replace("api/v2/shop/payum/", "{$locale}/checkout/complete/", $targetUrl);
 
         $bridgeOrder->success_redirect = $targetUrl;
         $bridgeOrder->failure_redirect = $targetUrl;
